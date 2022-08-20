@@ -17,3 +17,20 @@ export interface UserAggregated extends Omit<CreateUser, 'credentials'> {
   id: string
   credentials: Omit<Credentials, 'password' | 'id'>
 }
+
+export interface AdminData {
+  id: string
+  subordinates: Array<{
+    id: string
+    role: Role
+    bossId: string
+    credentialsId: string
+    fname: string
+    lname: string
+  }>
+  bossId: string
+  credentialsId: string
+  fname: string
+  lname: string
+  role: string
+}

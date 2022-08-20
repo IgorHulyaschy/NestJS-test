@@ -4,13 +4,14 @@ import { UserDto } from 'src/dto'
 import { UserService } from './UserService'
 import { SuchBossDoesNotExistsError } from './errors'
 import { ChangeBossPipe } from './pipes'
+
 @Controller('users')
 export class UserController {
   constructor(private readonly service: UserService) {}
 
   @Get('me')
   @UseGuards(AuthGuard)
-  getUser(@Request() req): Promise<UserDto.UserAggregated[]> {
+  getUser(@Request() req): Promise<UserDto.UserAggregated[] | UserDto.AdminData[]> {
     return this.service.getAggregated(req.user.id)
   }
 

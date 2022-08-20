@@ -4,7 +4,7 @@ import { getManager } from 'typeorm'
 import { NotUnique } from './errors'
 
 export interface IRepository<Entity> {
-  save(entity: Entity): Promise<void>
+  save(entity: Entity): Promise<Entity>
 
   findOne(param: Partial<Entity>): Promise<Entity | undefined>
 }
@@ -17,8 +17,8 @@ export function Repository<Entity>(entity: Class<Entity>): Class<IRepository<Ent
       return res
     }
 
-    async save(entity: Entity, em = getManager()): Promise<void> {
-      em.save(entity).catch((err) => {
+    async save(entity: Entity, em = getManager()): Promise<Entity> {
+      return em.save(entity).catch((err) => {
         if (err.detail.includes('already exists')) throw new NotUnique()
         throw err
       })

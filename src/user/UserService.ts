@@ -32,12 +32,12 @@ export class UserService {
     return user
   }
 
-  async getAggregated(id: string): Promise<UserDto.UserAggregated[]> {
+  async getAggregated(id: string): Promise<UserDto.UserAggregated[] | UserDto.AdminData[]> {
     const { role } = await this.get(id)
     let user
     if (role === Role.SUBORDINATE) user = await this.repository.getAggregatedSubordinate(id)
     if (role === Role.BOSS) user = await this.repository.getAggregatedBoss(id)
-    if (role === Role.ADMIN) user = await this.repository.getAggregatedAdmin()
+    if (role === Role.ADMIN) return this.repository.getAggregatedAdmin()
     return this.mapper.toAggregatedDto(user)
   }
 
